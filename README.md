@@ -3,4 +3,4 @@ Bootstrap full IAT unhooking of ntdll within kernel32. As most EDRs only hook nt
 
 Compiled in x64 with mingw using `x86_64-w64-mingw32-gcc iat.c rop.S -masm=intel -O0 -s`
 
-Note this code may break for functions that do not follow standard `mov r10, rcx; mov eax, [syscall]` convention. However, I have not observed any such issues.
+Note this code may break for functions that do not follow standard `mov r10, rcx; mov eax, [syscall]` convention. However, I have not observed any such issues, and am able to successfully dump lsass.exe without any crash.
