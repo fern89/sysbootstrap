@@ -11,22 +11,22 @@ int main(){
     printf("Original NtWriteVirtualMemory:\n");
     for(int i=0;i<10;i++) printf("\\x%02x", ((unsigned char*)ntwvm)[i]);
     printf("\n");
-    
+
     WriteProcessMemory(GetCurrentProcess(), ntwvm, patch, 7, &jonk);
-	printf("patched\n\n");
-	char jonklr = 'j';
+    printf("patched\n\n");
+    char jonklr = 'j';
     char tojonk = 'k';
     WriteProcessMemory(GetCurrentProcess(), &jonklr, &tojonk, 1, &jonk);
     printf("Byte (unchanged): %c\nPatched NtWriteVirtualMemory:\n", jonklr);
     for(int i=0;i<10;i++) printf("\\x%02x", ((unsigned char*)ntwvm)[i]);
     printf("\n\n");
-    
+
     unhook();
     printf("unhooked\n");
-	WriteProcessMemory(GetCurrentProcess(), &jonklr, &tojonk, 1, &jonk);
-	printf("Byte (changed): %c\nUnhooked NtWriteVirtualMemory - what the EDR sees:\n", jonklr);
-	for(int i=0;i<10;i++) printf("\\x%02x", ((unsigned char*)ntwvm)[i]);
+    WriteProcessMemory(GetCurrentProcess(), &jonklr, &tojonk, 1, &jonk);
+    printf("Byte (changed): %c\nUnhooked NtWriteVirtualMemory - what the EDR sees:\n", jonklr);
+    for(int i=0;i<10;i++) printf("\\x%02x", ((unsigned char*)ntwvm)[i]);
     printf("\n");
-	getchar();
-	return 0;
+    getchar();
+    return 0;
 }
