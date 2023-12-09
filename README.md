@@ -6,3 +6,9 @@ Compiled in x64 with mingw using `x86_64-w64-mingw32-gcc iat.c rop.S -masm=intel
 Note this code may break for functions that do not follow standard `mov r10, rcx; mov eax, [syscall]` convention. However, I have not observed any such issues, and am able to successfully dump lsass.exe without any crash.
 
 I have also opted to include all possible syscalls within `rop.S`, as while I am aware that it is very easy to allocate all the memory and generate everything dynamically, non-SEC_IMAGE executable memory is suspicious, possible IOC, so rather not do that. The size increase is ~5kb for hardcoded syscalls.
+
+Full thread stack analysis will also not lead to any detections, as no early stack termination will occur. Shown is the thread stack of a `Sleep()` call:
+
+![image](https://github.com/lemond69/sysbootstrap/assets/139056562/f13275f9-fb3a-43c7-8c5b-9c7baa597506)
+
+`NtMapUserPhysicalPagesScatter` is shown as that is the first occurrence of the `syscall` opcode in ntdll, so that is used. It is perfectly possible to select a completely different syscall location from within ntdll.
