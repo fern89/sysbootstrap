@@ -12,3 +12,5 @@ Full thread stack analysis will also not lead to any detections, as no early sta
 ![image](https://github.com/lemond69/sysbootstrap/assets/139056562/f13275f9-fb3a-43c7-8c5b-9c7baa597506)
 
 `NtMapUserPhysicalPagesScatter` is shown as that is the first occurrence of the `syscall` opcode in ntdll, so that is used. It is perfectly possible to select a completely different syscall location from within ntdll.
+
+If you are unable to modify your code for some reason, it is also easy to do unhooking of the process via DLL, using `dll.c`. DLL can be made with `x86_64-w64-mingw32-gcc dll.c rop.S -masm=intel -O0 -s -Wl,--exclude-all-symbols -shared -o [dll].dll`, then you can easily unhook the process either by a `LoadLibraryA` or a DLL injection.
