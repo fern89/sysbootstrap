@@ -7,10 +7,6 @@ Note this code may break for functions that do not follow standard `mov r10, rcx
 
 I have also opted to include all possible syscalls within `rop.S`, as while I am aware that it is very easy to allocate all the memory and generate everything dynamically, non-SEC_IMAGE executable memory is suspicious, possible IOC, so rather not do that. The size increase is ~5kb for hardcoded syscalls.
 
-Full thread stack analysis will also not lead to any detections, as no early stack termination will occur. Shown is the thread stack of a `Sleep()` call:
-
-![image](https://github.com/lemond69/sysbootstrap/assets/139056562/f13275f9-fb3a-43c7-8c5b-9c7baa597506)
-
 `NtMapUserPhysicalPagesScatter` is shown as that is the first occurrence of the `syscall` opcode in ntdll, so that is used. It is perfectly possible to select a completely different syscall location from within ntdll.
 
 If you are unable to modify your code for some reason, it is also easy to do unhooking of the process via DLL, using `dll.c`. DLL can be made with `x86_64-w64-mingw32-gcc dll.c rop.S -masm=intel -O0 -s -Wl,--exclude-all-symbols -shared -o [dll].dll`, then you can easily unhook the process either by a `LoadLibraryA` or a DLL injection.
